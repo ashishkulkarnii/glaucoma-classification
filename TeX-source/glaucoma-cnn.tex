@@ -1,0 +1,281 @@
+\documentclass{article}
+
+\usepackage{ml4cps}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{cleveref}       % smart cross-referencing
+\usepackage{lipsum}         % Can be removed after putting your text content
+\usepackage{graphicx}
+\usepackage{natbib}
+\usepackage{doi}
+\usepackage{enumitem}
+\usepackage{adjustbox}
+\usepackage[table,xcdraw]{xcolor}
+
+\graphicspath{{./images}}
+
+
+\title{A Comparative Study on Deep Convolutional Neural Networks and Histogram Equalization Techniques for Glaucoma Detection From Fundus Images}
+
+\date{}
+
+\newif\ifuniqueAffiliation
+% Uncomment to use multiple affiliations variant of author block 
+\uniqueAffiliationtrue
+
+\author{ 
+    Ashish Kulkarni\\
+	\textit{Department of Computer Science}\\
+    PES University\\
+	Bengaluru, Karnataka, India\\
+	\texttt{\href{mailto:ashish2002kulkarni@gmail.com}{ashish2002kulkarni@gmail.com}} \\
+	%% examples of more authors
+	\And
+	H Shafeeq Ahmed \\
+	\textit{Department of Medecine}\\
+	Bangalore Medical College and Research Institute\\
+    Bengaluru, Karnataka, India\\
+	\texttt{\href{mailto:shafeeqahmed2002@gmail.com}{shafeeqahmed2002@gmail.com}} \\
+}
+
+\renewcommand{\shorttitle}{CNNs and Histogram Equalization Techniques for Glaucoma Detection}
+
+%%% Add PDF metadata to help others organize their library
+%%% Once the PDF is generated, you can check the metadata with
+%%% $ pdfinfo template.pdf
+\hypersetup{
+pdftitle={A Comparative Study on Deep Convolutional Neural Networks and Histogram Equalization Techniques for Glaucoma Detection From Fundus Images},
+pdfsubject={A Comparative Study on Deep Convolutional Neural Networks and Histogram Equalization Techniques for Glaucoma Detection From Fundus Images},
+pdfauthor={Ashish Kulkarni, H Shafeeq Ahmed},
+pdfkeywords={Image Enhancement, Retinal Diseases, Intraocular Pressure, Optic Disk, Artificial Intelligence},
+}
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+
+\textbf{Aims}:
+To evaluate the performance of eight different convolutional neural network (CNN) models and histogram equalization techniques for glaucoma detection from fundus images.
+\textbf{Material and Methods}:
+The study utilized the ACRIMA database, comprising 705 fundus images (396 glaucomatous and 309 normal). The CNN architectures evaluated include VGG-16, VGG-19, ResNet-50, ResNet-152, Inception v3, Xception, DenseNet-121, and EfficientNetB7. Two histogram-based preprocessing methods were applied: histogram equalization (HE) and contrast limited adaptive histogram equalization (CLAHE). The models were trained using supervised learning, with image augmentation techniques applied. Performance metrics such as accuracy, sensitivity, specificity, precision, negative predictive value, Dice Similarity Coefficient, and Area Under the Receiver Operating Characteristics Curve (AUC ROC) were used for evaluation.
+\textbf{Results}:
+VGG-19 achieved the highest accuracy (97.9\%) in the raw data setting, followed closely by VGG-16 (97.2\%). ResNet-50 and ResNet-152 showed the highest specificity scores (98.4\%). The sensitivity of the models ranged from 91.3\% to 98.8\%, with VGG-16 and VGG-19 demonstrating the highest values. CLAHE preprocessing resulted in improved performance, particularly for ResNet-152, which achieved an accuracy of 97.5\% and sensitivity of 97.9\%. The AUC ROC values varied from 0.937 to 0.996, with VGG-16 having the highest value (0.998).
+\textbf{Conclusion}:
+The study highlights the importance of selecting suitable CNN architectures and preprocessing techniques in developing effective glaucoma detection systems. While VGG-19 exhibited the highest accuracy with raw data, VGG-16 and ResNet-50 offered consistent performance across different preprocessing techniques, making them reliable options for clinical applications.
+\end{abstract}
+
+
+% add keywords
+\keywords{Image Enhancement \and Retinal Diseases \and Intraocular Pressure \and Optic Disk \and Artificial Intelligence}
+
+\section{Introduction}
+Glaucoma is a leading cause of irreversible blindness in both the elderly and adult populace with a projected 112 million cases by 2040 \cite{b1}. Chronic neuropathy further leads to irreversible optic disk damage with structural nerve fibre damage, ultimately leading to vision loss. Characteristic changes to the optic nerve head (ONH) or the optic disk is characteristic of glaucoma \cite{b2}. The ONH is the location where ganglion cell axons form the optic disk (OD) while leaving the eye. The optic disk is visually separated into a bright and central zone in a fundus image. These are called the optic cup along with a peripheral portion called neuro-retinal rim \cite{b3}. The OD and optic cup are found in all individuals but abnormal variations in thesis of the cup relative to the OD is characteristic of glaucomatous eyes. Due to this, several different approaches have been discovered for OD and optic cup segmentation from colour fundus images \cite{b4, b5}.
+
+A convolutional neural network (CNN) is a network of self-optimizing neurons which learn directly from data \cite{b6}.  CNNs are primarily used in pattern recognition within images. The current paper uses supervised learning to train the CNN model. Supervised learning is the process by which a network learns through a set of pre-labelled inputs. The parameters are updated iteratively with the goal of minimizing the model’s classification error. The usage of CNNs in image analysis can be traced back to the 1990s \cite{b7, b8}. However, the usage of CNNs in the mainstream was low until 2012, when it saw a significant increase \cite{b9}.  This rise is attributed to the efficient use of GPUs, the adoption of the ReLU activation function, the usage of dropout layers and the usage of data augmentation techniques \cite{b10, b11}. 
+
+The current paper discusses the performance of histogram equalization and contrast limited adaptive histogram equalization (CLAHE). They involve applying transformations on the image such that its histogram acquires a more uniform distribution, thus improving image contrast \cite{b12}. This contrast enhancement technique generally increases global contrast in the image. It can be useful when applied on dark or bright images \cite{b13}. CLAHE is a form of adaptive histogram equalization where upon performing the enhancement, the maximum value is used to clip the histogram and redistribute the intensity \cite{b14}. The current study evaluates eight different convolutional neural network (CNN) models and histogram equalization techniques for the classification of fundus images of glaucoma patients versus healthy.
+
+\section{Materials and Methods}
+
+\subsection{Dataset}
+The images in the current study come from the ACRIMA database created by the Ministerio de Economía y Competitividad of Spain which develops automated algorithms for retinal disease assessment \cite{b15}. The database is composed of 705 fundus images (396 glaucomatous patients and 309 normal patients). All images were obtained from glaucomatous and normal patients. The present study does not require institutional ethics approval as no patients were involved in this study.
+
+All the patients in the database were selected by a team of experts based on an inclusion and exclusion criteria formed by clinical findings on examination. Most fundus images were taken either from a previously dilated left or right eye and centred in the OD. Images were taken with a 35° field of view using the Topcon TRC retinal camera and IMAGEnet® capture System.
+
+All fundus images from the database were separately annotated by two glaucoma experts each with eight years of experience. No other clinical information was considered while giving labels for the fundus images.
+
+\subsection{Network Architecture}
+The current paper evaluates the performance of models based on six well-known CNN architectures:
+
+\begin{description}[leftmargin=0cm,style=nextline]
+    \item[VGG] Introduced in 2014, VGG was a novel approach to increasing network depth by using very small convolution filters (3 * 3) to between 16 and 19 layers. The current paper utilizes the VGG-16 and VGG-19 networks, which are of depth 16 and 19 layers respectively. \cite{b15}
+    
+    \item[ResNet] The ResNet architecture is a CNN that was introduced in 2015 by Microsoft Research which made use of residual learning framework to more efficiently train deeper networks. Residual nets, while much deeper than VGG nets, are of less complexity. The current paper makes use of two residual nets: ResNet-50, which has a depth of 50 layers and ResNet-152, which has a depth of 152 layers. \cite{b17}
+    
+    \item[Inception-v3] Inception v3 is the third edition of Google’s Inception CNN used in image analysis and object detection, introduced as a module for GoogLeNet. It is a 42-layer CNN with 11 Inception modules. In essence, the Inception module allows us to use multiple filter sizes in each image block. \cite{b18}
+    
+    \item[Xception] Xception, or “extreme Inception”, is a 71-layer CNN which uses depthwise separable convolutions rather than standard Inception modules. \cite{b19}
+    
+    \item[DenseNet] The Dense Convolutional Network, or DenseNet architecture, connects each layer to every other layer in a feed-forward fashion. The current paper uses a DenseNet with a depth of 121 layers. \cite{b20}
+    
+    \item[EfficientNet] EfficientNet is an architecture that leverages a different scaling method to scale all dimensions using a compound coefficient. In this study, we make use of EfficientNet-B7, which consists of approximately 66M parameters. \cite{b21}
+\end{description}
+
+Every architecture used is transferred with their ImageNet weights, and only the last 3 convolutional layers are set to trainable. In addition, we added two dense layers and a dropout layer in between, with a rate of 0.5.
+
+\begin{figure}
+	\centering
+    \includegraphics[height=7cm]{images/arch.png}
+	\caption{CNN architecture used.}
+	\label{fig:fig1}
+\end{figure}
+
+\subsection{Data Preprocessing}
+
+The current paper has evaluated two methods of histogram-based image preprocessing: histogram equalisation and CLAHE.
+
+\begin{description}[leftmargin=0cm,style=nextline]
+    \item[Histogram Equalization] This contrast enhancement technique generally increases global contrast in the image. It can be useful when applied on dark or bright images \cite{b22}.
+    
+    \item[Contrast Limited Adaptive Histogram Equalization] CLAHE is a form of adaptive histogram equalization where upon performing the enhancement, the maximum value is used to clip the histogram and redistribute the intensity \cite{b23}. In case of performing CLAHE on a true-colour image, the CIELAB colour space is used.
+\end{description}
+
+\begin{figure}
+	\centering
+    \includegraphics[height=6cm]{images/transformations.png}
+	\caption{A fundus image with different transformations applied to it.}
+	\label{fig:fig2}
+\end{figure}
+
+\subsection{Model Training}
+Each model was fine-tuned on the training date for 128 epochs, with a batch size of 32. Before feeding the training images into the neural network, image augmentation by random affine transformations (flipping, rotation and translation) and contrast adjustment is performed. Figure \ref{fig:fig2} shows the various alterations of the image after augmentation has been applied.
+
+\subsection{Model Evaluation}
+The present study uses several performance metrics to evaluate the models. These metrics include accuracy, which measures the overall correctness of the model's predictions, and sensitivity (True Positive Rate), which assesses the model's ability to correctly identify positive cases. Specificity (True Negative Rate) evaluates the model's capability to correctly identify negative cases, while precision (Positive Predictive Value) measures the accuracy of positive predictions. Negative Predictive Value assesses the accuracy of negative predictions. The study also utilizes the Dice Similarity Coefficient (F1 Score) to provide a balance between precision and sensitivity. Finally, the Area Under the Receiver Operating Characteristics Curve (AUC ROC) is used to measure the model's ability to distinguish between positive and negative cases across different threshold settings.
+
+\section{Results}
+
+\begin{table}
+    \adjustbox{max width=\textwidth}{
+        \begin{tabular}{lllllll}
+            \toprule
+            \textbf{Model} & \textbf{Accuracy} & \textbf{Specificity} & \textbf{Sensitivity} & \textbf{F1 Score} & \textbf{Area Under ROC} & \textbf{Number of Parameters} \\ \midrule
+            \textit{VGG-16}         & 0.9718 & 0.9516 & 0.9875 & 0.9753 & 0.9978 & 2,31,04,066  \\
+            \textit{VGG-19}         & 0.9789 & 0.9677 & 0.9875 & 0.9814 & 0.9933 & 2,84,13,762  \\
+            \textit{ResNet-50}      & 0.9577 & 0.9839 & 0.9375 & 0.9615 & 0.9956 & 5,71,42,914  \\
+            \textit{ResNet-152}     & 0.9507 & 0.9839 & 0.925  & 0.9548 & 0.9944 & 9,19,26,146  \\
+            \textit{Inception v3}   & 0.9085 & 0.8871 & 0.925  & 0.9193 & 0.9364 & 4,06,77,922  \\
+            \textit{Xception}       & 0.9296 & 0.9516 & 0.9125 & 0.9359 & 0.9794 & 5,44,16,682  \\
+            \textit{DenseNet-121}   & 0.9577 & 0.9516 & 0.9625 & 0.9625 & 0.9960 & 2,38,15,490  \\
+            \textit{EfficientNetB7} & 0.9225 & 0.8871 & 0.95   & 0.9325 & 0.9625 & 10,60,41,497 \\
+        \end{tabular}
+    }
+    \caption{Performance Metrics of Convolutional Neural Network Models without Histogram Equalization}
+    \label{tab:table1}
+\end{table}
+
+Table \ref{tab:table1} presents the performance metrics of various models without any histogram equalisation. The models under consideration are VGG-16, VGG-19, ResNet-50, ResNet-152, Inception v3, Xception, DenseNet-121, and EfficientNetB7. The accuracy values range from 0.908 to 0.979. VGG-19 achieved the highest accuracy (0.979), closely followed by VGG-16 (0.972). Specificity values range from 0.887 to 0.984. ResNet-50 and ResNet-152 have the highest specificity scores (0.984). Sensitivity, ranges from 0.913 to 0.988. VGG-16 and VGG-19 both demonstrate the highest sensitivity values (0.988). VGG-19 leads with the highest F1 score (0.981). The AUC-ROC values vary from 0.937 to 0.996. VGG-16 has the highest AUC-ROC value (0.998). The table also presents a comparison of model accuracies with the number of parameters used in each model. Among the models, VGG-19 achieved the highest accuracy of 97.89\% with 28,413,762 parameters, while EfficientNetB7 had the most parameters (106,041,497) but an accuracy of 92.25\%. ResNet-50 and DenseNet-121 achieved an accuracy of 95.77\% and 95.77\%, respectively, with significantly fewer parameters (57,142,914 and 23,815,490).
+
+\begin{table}
+    \adjustbox{max width=\textwidth}{
+        \begin{tabular}{lllllll}
+            \toprule
+            \textbf{Model} & \textbf{Accuracy} & \textbf{Specificity} & \textbf{Sensitivity} & \textbf{F1 Score} & \textbf{Area Under ROC} & \textbf{Number of Parameters} \\ \midrule
+            \textit{VGG-16}         & 0.9437 & 0.9355 & 0.9500 & 0.9500 & 0.9935 & 2,31,04,066  \\
+            \textit{VGG-19}         & 0.8944 & 0.9516 & 0.8500 & 0.9007 & 0.9784 & 2,84,13,762  \\
+            \textit{ResNet-50}      & 0.9366 & 0.9516 & 0.9250 & 0.9427 & 0.9919 & 5,71,42,914  \\
+            \textit{ResNet-152}     & 0.9366 & 0.9677 & 0.9125 & 0.9419 & 0.9889 & 9,19,26,146  \\
+            \textit{Inception v3}   & 0.7676 & 0.8710 & 0.6875 & 0.7692 & 0.8468 & 4,06,77,922  \\
+            \textit{Xception}       & 0.7676 & 0.9032 & 0.6625 & 0.7626 & 0.8984 & 5,44,16,682  \\
+            \textit{DenseNet-121}   & 0.9296 & 0.8871 & 0.9625 & 0.9390 & 0.9851 & 2,38,15,490  \\
+            \textit{EfficientNetB7} & 0.8380 & 0.8226 & 0.8500 & 0.8553 & 0.9268 & 10,60,41,497 \\
+        \end{tabular}
+    }
+    \caption{Performance Metrics of Convolutional Neural Network Models with Histogram Equalization}
+    \label{tab:table2}
+\end{table}
+
+Table \ref{tab:table2} displays performance metrics of CNNs with histogram equalization (HE). The VGG-16 model demonstrated high accuracy and sensitivity. Its performance was closely matched by ResNet-50, which also showed high accuracy and a slightly lower sensitivity but maintained a high specificity and AUC. VGG-19, while having good specificity, showed lower sensitivity compared to VGG-16 and ResNet-50. ResNet-152 exhibited a balanced performance with high accuracy, sensitivity, and specificity. Inception v3 and Xception, although less accurate compared to the others, still performed well, with Inception v3 showing relatively lower sensitivity. DenseNet-121 and EfficientNetB7 also performed well, with DenseNet-121 achieving high sensitivity and EfficientNetB7 balancing between accuracy and the number of parameters.
+
+\begin{table}
+    \adjustbox{max width=\textwidth}{
+        \begin{tabular}{lllllll}
+            \toprule
+            \textbf{Model} & \textbf{Accuracy} & \textbf{Specificity} & \textbf{Sensitivity} & \textbf{F1 Score} & \textbf{Area Under ROC} & \textbf{Number of Parameters} \\ \midrule
+            \textit{VGG-16}         & 0.9225 & 1.0000 & 0.8625 & 0.9262 & 0.9966 & 2,31,04,066  \\
+            \textit{VGG-19}         & 0.9225 & 1.0000 & 0.8625 & 0.9262 & 0.9966 & 2,84,13,762  \\
+            \textit{ResNet-50}      & 0.9296 & 0.8710 & 0.9750 & 0.9398 & 0.9838 & 5,71,42,914  \\
+            \textit{ResNet-152}     & 0.9577 & 0.9355 & 0.9750 & 0.9630 & 0.9942 & 9,19,26,146  \\
+            \textit{Inception v3}   & 0.8099 & 0.7742 & 0.8375 & 0.8323 & 0.9173 & 4,06,77,922  \\
+            \textit{Xception}       & 0.7817 & 0.9355 & 0.6625 & 0.7737 & 0.9212 & 5,44,16,682  \\
+            \textit{DenseNet-121}   & 0.9507 & 0.9355 & 0.9625 & 0.9565 & 0.9877 & 2,38,15,490  \\
+            \textit{EfficientNetB7} & 0.8944 & 0.8387 & 0.9375 & 0.9091 & 0.9256 & 10,60,41,497 \\
+        \end{tabular}
+    }
+    \caption{Performance Metrics of Convolutional Neural Network Models with CLAHE}
+    \label{tab:table3}
+\end{table}
+
+Table \ref{tab:table3} displays performance metrics of CNNs with CLAHE. ResNet-152 achieved the highest accuracy and sensitivity, significantly improving upon its histogram equalization results. VGG-16 and VGG-19 both maintained their performance with perfect specificity but had slightly lower sensitivity compared to their HE results. ResNet-50 also showed improved sensitivity with CLAHE. DenseNet-121 stood out with high accuracy and sensitivity, rivalling the performance of ResNet-152. EfficientNetB7 and Xception showed moderate improvements, while Inception v3 had a balanced yet slightly lower performance compared to the other models.
+
+\begin{figure}
+	\centering
+    \includegraphics[height=7cm]{images/performance.png}
+	\caption{Accuracy of classification across different preprocessing techniques.}
+	\label{fig:fig3}
+\end{figure}
+
+Figure \ref{fig:fig3} compares the average values of the models across different preprocessing techniques. The Normal preprocessing technique yielded the highest average performance with an accuracy of 94.01\%, sensitivity of 95.63\%, F1 score of 94.75\%, and AUC of 97.92\%. Histogram Equalization showed slightly lower performance, with an accuracy of 88.38\%, sensitivity of 90.63\%, F1 score of 89.72\%, and AUC of 95.59\%. CLAHE offered a balanced performance, with an accuracy of 92.25\%, sensitivity of 95.00\%, F1 score of 93.28\%, and AUC of 95.67\%, outperforming HE but slightly behind Normal preprocessing.
+
+\begin{figure}
+	\centering
+    \includegraphics[height=7cm]{images/roc.png}
+	\caption{Receiver operating characteristic curves of each classifier.}
+	\label{fig:fig4}
+\end{figure}
+
+Figure \ref{fig:fig4} illustrates the ROC curves for various deep learning models used in the study. The VGG-16, ResNet50, and DenseNet-121 models achieved an AUC of 1.00. VGG-19 and ResNet-152 closely followed with AUCs of 0.99. The other models while having lower AUCs, also performed well.
+
+\section{Discussion}
+The current study aimed to evaluate the performance of an AI model for glaucoma classification using convolutional neural networks (CNNs). The results demonstrated that CNN models, particularly VGG-19 and VGG-16, showed the highest accuracies and sensitivities in distinguishing between glaucoma patients and healthy individuals, outperforming other architectures like ResNet, Inception v3, Xception, DenseNet-121, and EfficientNetB7. These findings are significant as they indicate the potential of AI-based systems in assisting with the early detection and diagnosis of glaucoma, which is a leading cause of irreversible blindness. The high accuracy achieved by the deep learning model suggests its capability to correctly identify positive cases, thereby aiding in timely interventions and improved patient outcomes. To the best of our knowledge this is the first study using HE and CLAHE in glaucoma evaluation.
+
+Among the CNN models evaluated, VGG-19 emerged with the highest accuracy in the raw data setting, which has been a major model used by other researchers. As seen in our study, coloured fundus photographs happen to be the preferred option \cite{b24, b25, b26}. However, its performance declined notably when HE was applied, probably due to its sensitivity to preprocessing methods. Conversely, models like VGG-16 and ResNet-50 demonstrated more stable performance across different preprocessing techniques. However, several author when comparing HE and CLAHE with other techniques have also not noted a significant improvement \cite{b27}. On the other hand Alshamrani et al. \cite{b28} were able to get beneficial outcomes from the use of histogram equalisation techniques for three CNN classification.
+
+HE and CLAHE techniques were employed to enhance image quality and improve model performance. CLAHE works by removing noise and preventing noise amplification as well \cite{b29, b30}.  While HE initially showed promise in enhancing image contrast, our results indicate mixed outcomes across different CNN models. For instance, CLAHE demonstrated a more consistent improvement in sensitivity metrics compared to HE, reiterating its potential in enhancing image features critical for glaucoma detection. However, the methodology behind its working is easily dependent on the images themselves rather than the algorithm \cite{b31, b32}.
+
+The evaluation of model size relative to performance metrics showed interesting trade-offs. Despite the higher parameter counts of models like EfficientNetB7, their performance did not consistently outpace that of smaller architectures like VGG-16 and ResNet-50. This suggests that while model complexity is important, architectural design and sensitivity to preprocessing techniques play critical roles in achieving high accuracy and reliability. Additionally, the number of parameters in a model, or the model’s size, often plays a large role in the deployability of the solution \cite{b33}. A large model would be harder to run onsite, and would take longer to process an input \cite{b34}. However, it is important to note that regardless of the methodology followed or issues with optimisation, our model performed superior to the majority of the CNN models evaluated insofar for glaucoma detection from colour fundus images \cite{b35}.
+
+The present study does have its limitations, including the utilisation of a third-party database. Moreover, the images were clearly cropped with a focus on the optic disc, which is often not seen in clinical practice as these can be obtained from various angles. However, the findings of this study have important implications for clinical practice. By identifying CNN models and preprocessing techniques that optimize sensitivity and specificity for glaucoma detection, clinicians can potentially enhance diagnostic accuracy and efficiency. Future research directions may explore hybrid preprocessing methods or novel architectures tailored to specific image characteristics inherent in fundus images, further refining the capabilities of automated glaucoma detection systems.
+
+\section{Conclusion}
+In conclusion, our comparative study shows the importance of selecting appropriate CNN architectures and preprocessing techniques in the development of robust glaucoma detection systems. While VGG-19 initially demonstrated superior accuracy, its sensitivity to preprocessing methods calls for careful consideration in clinical applications. Models like VGG-16 and ResNet-50, with their balanced performance across different settings, offer practical solutions for reliable glaucoma detection. Moving forward, continued advancements in CNN design and image enhancement techniques hold promise for further improving diagnostic outcomes in ophthalmology.
+
+\bibliographystyle{abbrv}
+\begin{thebibliography}{99.}
+\bibitem{b1} Tham YC, Li X, Wong TY, Quigley HA, Aung T, Cheng CY. Global prevalence of glaucoma and projections of glaucoma burden through 2040: a systematic review and meta-analysis. Ophthalmology. 2014;121(11):2081-2090. doi:10.1016/j.ophtha.2014.05.013
+\bibitem{b2} Weinreb RN, Aung T, Medeiros FA. The pathophysiology and treatment of glaucoma: a review. JAMA. 2014;311(18):1901-1911. doi:10.1001/jama.2014.3192
+\bibitem{b3} Bock R, Meier J, Nyúl LG, Hornegger J, Michelson G. Glaucoma risk index: automated glaucoma detection from color fundus images. Med Image Anal. 2010;14(3):471-481. doi:10.1016/j.media.2009.12.006
+\bibitem{b4} Sivaswamy J, Krishnadas SR, Datt Joshi G, Jain M, Syed Tabish AU. Drishti-GS: Retinal image dataset for optic nerve head (ONH) segmentation. In: 2014 IEEE 11th International Symposium on Biomedical Imaging (ISBI). IEEE; 2014.
+\bibitem{b5} Morales S, Naranjo V, Angulo U, Alcaniz M. Automatic detection of optic disc based on PCA and mathematical morphology. IEEE Trans Med Imaging. 2013;32(4):786-796. doi:10.1109/TMI.2013.2238244
+\bibitem{b6} O'Shea K, Nash R. An Introduction to Convolutional Neural Networks. arXiv. Published online 2015. abs/1511.08458.
+\bibitem{b7} Lo SB, Lou SA, Lin JS, Freedman MT, Chien MV, Mun SK. Artificial convolution neural network techniques and applications for lung nodule detection. IEEE Trans Med Imaging. 1995;14(4):711-718. doi:10.1109/42.476112
+\bibitem{b8} LeCun Y, Bottou L, Bengio Y, Haffner P. Gradient-based learning applied to document recognition. Proc IEEE. 1998;86(11):2278-2324. doi:10.1109/5.726791
+\bibitem{b9} LeCun Y, Bengio Y, Hinton G. Deep learning. Nature. 2015;521:436-444. doi:10.1038/nature14539
+\bibitem{b10} Srivastava N, Hinton G, Krizhevsky A, Sutskever I, Salakhutdinov R. Dropout: A simple way to prevent neural networks from overfitting. J Mach Learn Res. 2014;15:1929-1958.
+\bibitem{b11} Simard PY, Steinkraus D, Platt JC. Best practices for convolutional neural networks applied to visual document analysis. In: Proceedings of the 7th International Conference on Document Analysis and Recognition. IEEE; 2003:958-963. doi:10.1109/ICDAR.2003.1227801
+\bibitem{b12} Murcia-Gómez D, Rojas-Valenzuela I, Valenzuela O. Impact of image preprocessing methods and deep learning models for classifying histopathological breast cancer images. Appl Sci. 2022;12(22):11375. doi:10.3390/app122211375
+\bibitem{b13} Patel O, Maravi Y, Sharma S. A comparative study of histogram equalization based image enhancement techniques for brightness preservation and contrast enhancement. Signal Image Process Int J. 2013;4:10-5121/sipij.2013.4502.
+\bibitem{b14} Yadav G, Maheshwari S, Agarwal A. Contrast limited adaptive histogram equalization based enhancement for real time video system. In: 2014 International Conference on Advances in Computing, Communications and Informatics (ICACCI). IEEE; 2014:2392-2397.
+\bibitem{b15} Diaz-Pinto A, Morales S, Naranjo V, Köhler T, Mossi JM, Navea A. CNNs for automatic glaucoma assessment using fundus images: An extensive validation. Published online March 15, 2019. figshare. Dataset. doi:10.6084/m9.figshare.7613135.v1
+\bibitem{b16} Simonyan K, Zisserman A. Very deep convolutional networks for large-scale image recognition. arXiv. Published online 2015. eprint 1409.1556. doi:10.48550/arXiv.1409.1556
+\bibitem{b17} He K, Zhang X, Ren S, Sun J. Deep Residual Learning for Image Recognition. arXiv. Published online 2015. eprint 1512.03385. doi:10.48550/arXiv.1512.03385
+\bibitem{b18} Szegedy C, Vanhoucke V, Ioffe S, Shlens J, Wojna Z. Rethinking the Inception Architecture for Computer Vision. arXiv. Published online 2015. eprint 1512.00567. doi:10.48550/arXiv.1512.00567
+\bibitem{b19} Chollet F. Xception: Deep Learning with Depthwise Separable Convolutions. arXiv. Published online 2016. eprint 1610.02357. doi:10.48550/arXiv.1610.02357
+\bibitem{b20} Huang G, Liu Z, van der Maaten L, Weinberger KQ. Densely Connected Convolutional Networks. arXiv. Published online 2016. eprint 1608.06993. doi:10.48550/arXiv.1608.06993
+\bibitem{b21} Tan M, Le QV. EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks. arXiv. Published online 2019. eprint 1905.11946. doi:10.48550/arXiv.1905.11946 
+\bibitem{b22} Patel O, Maravi Y, Sharma S. A Comparative Study of Histogram Equalization Based Image Enhancement Techniques for Brightness Preservation and Contrast Enhancement. Signal \& Image Processing: An International Journal. 2013;4. doi:10.5121/sipij.2013.4502.
+\bibitem{b23} Yadav G, Maheshwari S, Agarwal A. Contrast limited adaptive histogram equalization based enhancement for real time video system. Paper presented at: 2014 International Conference on Advances in Computing, Communications and Informatics (ICACCI); 2014:2392-2397.
+\bibitem{b24} Raja J, Shanmugam P, Pitchai R. An Automated Early Detection of Glaucoma using Support Vector Machine Based Visual Geometry Group 19 (VGG-19) Convolutional Neural Network. Wireless Pers Commun. 2021;118:523-534. doi:10.1007/s11277-020-08029-z
+\bibitem{b25} Saha S, Vignarajan J, Frost S. A fast and fully automated system for glaucoma detection using color fundus photographs. Sci Rep. 2023;13(1):18408. doi:10.1038/s41598-023-44473-0
+\bibitem{b26} Gómez-Valverde JJ, Antón A, Fatti G, et al. Automatic glaucoma classification using color fundus images based on convolutional neural networks and transfer learning. Biomed Opt Express. 2019;10(2):892-913. doi:10.1364/BOE.10.000892
+\bibitem{b27} Sharma A, Mishra PK. Image enhancement techniques on deep learning approaches for automated diagnosis of COVID-19 features using CXR images. Multimed Tools Appl. 2022;81(29):42649-42690. doi:10.1007/s11042-022-13486-8
+\bibitem{b28} Alshamrani K, Alshamrani HA, Alqahtani FF, Almutairi BS. Enhancement of Mammographic Images Using Histogram-Based Techniques for Their Classification Using CNN. Sensors (Basel). 2022;23(1):235. doi:10.3390/s23010235
+\bibitem{b29} Opoku M, Weyori BA, Adekoya AF, Adu K. CLAHE-CapsNet: Efficient retina optical coherence tomography classification using capsule networks with contrast limited adaptive histogram equalization. PLoS One. 2023;18(11):e0288663. doi:10.1371/journal.pone.0288663
+\bibitem{b30} Wang Y, Zhang Y, Yao Z, Zhao R, Zhou F. Machine learning based detection of age-related macular degeneration (AMD) and diabetic macular edema (DME) from optical coherence tomography (OCT) images. Biomed Opt Express. 2016;7(12):4928-4940. doi:10.1364/BOE.7.004928
+\bibitem{b31} Singh P, Mukundan R, De Ryke R. Feature Enhancement in Medical Ultrasound Videos Using Contrast-Limited Adaptive Histogram Equalization. J Digit Imaging. 2020;33(1):273-285. doi:10.1007/s10278-019-00211-5
+\bibitem{b32} Wang Y, Guo Y, Wang Z, Yu L, Yan Y, Gu Z. Enhancing semantic segmentation in chest X-ray images through image preprocessing: ps-KDE for pixel-wise substitution by kernel density estimation. PLoS One. 2024;19(6):e0299623. doi:10.1371/journal.pone.0299623
+\bibitem{b33} Sarker IH. Deep Learning: A Comprehensive Overview on Techniques, Taxonomy, Applications and Research Directions. SN Comput Sci. 2021;2(6):420. doi:10.1007/s42979-021-00815-1
+\bibitem{b34} Ma L, Yu S, Xu X, Moses Amadi S, Zhang J, Wang Z. Application of artificial intelligence in 3D printing physical organ models. Mater Today Bio. 2023;23:100792. doi:10.1016/j.mtbio.2023.100792
+\bibitem{b35} Ilesanmi AE, Ilesanmi T, Gbotoso GA. A systematic review of retinal fundus image segmentation and classification methods using convolutional neural networks. Healthc Analytics. 2023;4:100261. doi:10.1016/j.health.2023.100261
+
+\end{thebibliography}
+
+\end{document}

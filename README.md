@@ -26,7 +26,7 @@ Data augmentation involved random change in contrast, flip along horizontal or v
 ![Image augmentation](TeX-source/images/transformations.png)
 
 The notebooks can be accessed in the [notebooks folder](notebooks) folder of this repo.
-Here is an example of the notebook used for training a model based on VGG-19 using CLAHE for image preprocessing: [notebook](notebooks/v16/clahe/clahe.ipynb).
+[Here](notebooks/v16/clahe/clahe.ipynb) is an example of the notebook used for training a model based on VGG-19 using CLAHE for image preprocessing.
 
 ### Results
 

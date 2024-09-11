@@ -1,10 +1,11 @@
 # A Comparative Study on Deep Convolutional Neural Networks and Histogram Equalization Techniques for Glaucoma Detection From Fundus Images
 
-Using CNNs to classify an image into normal or glaucomatous, using retinal fundus images by transfer learning, and evaluating 2 histogram equalisation-based image preprocessing techniques. This project was a collaboration with [H Shafeeq Ahmed](https://orcid.org/0000-0003-1671-8474).
-
-Read our paper [here](paper.pdf).
-
+Using CNNs to classify an image into normal or glaucomatous, using retinal fundus images by transfer learning, and evaluating 2 histogram equalisation-based image preprocessing techniques. 
 The dataset used is [ACRIMA](https://figshare.com/s/c2d31f850af14c5b5232), containing 705 labelled images: _396_ glaucomatous images and _309_ normal images.
+
+
+This project was a collaboration with [H Shafeeq Ahmed](https://orcid.org/0000-0003-1671-8474).
+Read our paper [here](paper.pdf).
 
 ## Model Comparison
 
@@ -24,20 +25,21 @@ Data augmentation involved random change in contrast, flip along horizontal or v
 
 ![Image augmentation](TeX-source/images/transformations.png)
 
-The notebooks can be accessed in the [notebooks folder](notebooks) folder of this repo. Here is an example of the notebook used for training a model based on VGG-19 using CLAHE for image preprocessing: [notebook](notebooks/v16/clahe/clahe.ipynb).
+The notebooks can be accessed in the [notebooks folder](notebooks) folder of this repo.
+Here is an example of the notebook used for training a model based on VGG-19 using CLAHE for image preprocessing: [notebook](notebooks/v16/clahe/clahe.ipynb).
 
 ### Results
 
 |     Model             |     Accuracy    |     Specificity    |     Sensitivity    |     F1 Score    |     Area Under ROC    |     Number of Parameters    |
 |-----------------------|-----------------|--------------------|--------------------|-----------------|-----------------------|-----------------------------|
-|     VGG-16            |     0.9718      |     0.9516         |     0.9875         |     0.9753      |     0.9978            |     2,31,04,066             |
-|     VGG-19            |     0.9789      |     0.9677         |     0.9875         |     0.9814      |     0.9933            |     2,84,13,762             |
-|     ResNet-50         |     0.9577      |     0.9839         |     0.9375         |     0.9615      |     0.9956            |     5,71,42,914             |
-|     ResNet-152        |     0.9507      |     0.9839         |     0.925          |     0.9548      |     0.9944            |     9,19,26,146             |
-|     Inception v3      |     0.9085      |     0.8871         |     0.925          |     0.9193      |     0.9364            |     4,06,77,922             |
-|     Xception          |     0.9296      |     0.9516         |     0.9125         |     0.9359      |     0.9794            |     5,44,16,682             |
-|     DenseNet-121      |     0.9577      |     0.9516         |     0.9625         |     0.9625      |     0.9960            |     2,38,15,490             |
-|     EfficientNetB7    |     0.9225      |     0.8871         |     0.95           |     0.9325      |     0.9625            |     10,60,41,497            |
+|     VGG-16            |     0.9718      |     0.9516         |     0.9875         |     0.9753      |     0.9978            |     23104066             |
+|     VGG-19            |     0.9789      |     0.9677         |     0.9875         |     0.9814      |     0.9933            |     28413762             |
+|     ResNet-50         |     0.9577      |     0.9839         |     0.9375         |     0.9615      |     0.9956            |     57142914             |
+|     ResNet-152        |     0.9507      |     0.9839         |     0.925          |     0.9548      |     0.9944            |     91926146             |
+|     Inception v3      |     0.9085      |     0.8871         |     0.925          |     0.9193      |     0.9364            |     40677922             |
+|     Xception          |     0.9296      |     0.9516         |     0.9125         |     0.9359      |     0.9794            |     54416682             |
+|     DenseNet-121      |     0.9577      |     0.9516         |     0.9625         |     0.9625      |     0.9960            |     23815490             |
+|     EfficientNetB7    |     0.9225      |     0.8871         |     0.95           |     0.9325      |     0.9625            |     106041497            |
 
 ## Preprocessing Techniques Comparison
 

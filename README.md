@@ -5,7 +5,7 @@ The dataset used is [ACRIMA](https://figshare.com/s/c2d31f850af14c5b5232), conta
 
 
 This project was a collaboration with [H Shafeeq Ahmed](https://orcid.org/0000-0003-1671-8474).
-Read our paper [here](paper.pdf).
+Read our paper [here](preprint.pdf).
 
 ## Model Comparison
 
